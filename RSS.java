@@ -13,11 +13,11 @@ public class RSS {
     private static Scanner          fileScanner;
 
 
-    public static void              main(String[] args) {
+    public static void main(String[] args) {
         start();
     }
 
-    private static int              getActionMenuInput() {
+    private static int getActionMenuInput() {
         //Prompt
         printActionMenuPrompt();
         //Get input
@@ -39,7 +39,7 @@ public class RSS {
         } while (true);
     }
 
-    private static void             printActionMenuPrompt() {
+    private static void printActionMenuPrompt() {
         System.out.print("\nType a valid number for your desired action:\n" +
                 "[1] Show updates\n" +
                 "[2] Add URL\n" +
@@ -47,7 +47,7 @@ public class RSS {
                 "[4] Exit\n");
     }
 
-    private static int              getShowUpdateInput() {
+    private static int getShowUpdateInput() {
         //Prompt
         printShowUpdatesPrompt();
         //Get input
@@ -69,7 +69,7 @@ public class RSS {
         } while (true);
     }
 
-    private static void             printShowUpdatesPrompt() {
+    private static void printShowUpdatesPrompt() {
         System.out.println("Show Updates For:");
         System.out.println("[0] All websites" );
         for (int i = 0; i < getSavedTitles().size(); i++) {
@@ -78,15 +78,15 @@ public class RSS {
         System.out.println("Enter -1 to return");
     }
 
-    private static boolean          isInRangeUpdate(int input) {
+    private static boolean isInRangeUpdate(int input) {
         return input >= -1 && input <= getSavedTitles().size();
     }
 
-    private static boolean          isInRangeStart(int inp) {
+    private static boolean isInRangeStart(int inp) {
         return 1 <= inp && inp <= 4;
     }
 
-    public static void              start() {
+    public static void start() {
         try {
             fileWriter = new FileWriter(FILE,true);
         } catch (IOException e) {
@@ -114,7 +114,7 @@ public class RSS {
         }
     }
 
-    public static void              showUpdates() {
+    public static void showUpdates() {
         int input = getShowUpdateInput();
 
         if      (input == -1){
@@ -130,11 +130,11 @@ public class RSS {
         }
     }
 
-    private static void             showUpdatesOf(int input) {
+    private static void showUpdatesOf(int input) {
         retrieveRssContent(getSavedRss().get(input));
     }
 
-    public static void              addURL() {
+    public static void addURL() {
         String URL;
 
         System.out.println("Please enter website URL to add:");
@@ -149,7 +149,7 @@ public class RSS {
         }
     }
 
-    public static void              removeURL() {
+    public static void removeURL() {
         System.out.println("Please enter website URL to remove:");
         String givenURL = s.next();
 
@@ -165,7 +165,7 @@ public class RSS {
         start();
     }
 
-    private static void             rewriteOmitted(String newData) {
+    private static void rewriteOmitted(String newData) {
         try {
             FileWriter writer = new FileWriter(new File("data.txt"));
             writer.write(newData);
@@ -174,7 +174,7 @@ public class RSS {
         }
     }
 
-    private static String           getAfterData(int indexOfURL) {
+    private static String getAfterData(int indexOfURL) {
         String remained = "";
         createFileScanner();
 
@@ -188,7 +188,7 @@ public class RSS {
         return remained;
     }
 
-    private static String           getBeforData(int indexOfURL) {
+    private static String getBeforData(int indexOfURL) {
         String remained = "";
         createFileScanner();
         for (int i = 0; i < indexOfURL-1; i++) {
@@ -197,7 +197,7 @@ public class RSS {
         return remained;
     }
 
-    public static void              retrieveRssContent(String rssUrl) {
+    public static void retrieveRssContent(String rssUrl) {
         try {
             String rssXml = fetchPageSource(rssUrl);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -224,7 +224,7 @@ public class RSS {
         }
     }
 
-    public static String            fetchPageSource(String urlString) throws URISyntaxException, IOException {
+    public static String fetchPageSource(String urlString) throws URISyntaxException, IOException {
         URI uri = new URI(urlString);
         URL url = uri.toURL();
 
@@ -235,7 +235,7 @@ public class RSS {
         return toString(inputStream);
     }
 
-    private static String           toString(InputStream inputStream) throws IOException {
+    private static String toString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         String inputLine;
         StringBuilder stringBuilder = new StringBuilder();
@@ -245,7 +245,7 @@ public class RSS {
         return stringBuilder.toString();
     }
 
-    public static String            extractPageTitle(String html) {
+    public static String extractPageTitle(String html) {
         try {
             org.jsoup.nodes.Document doc = Jsoup.parse(html);
             return doc.select("title").first().text();
@@ -254,12 +254,12 @@ public class RSS {
         }
     }
 
-    public static String            extractRssUrl(String url) throws IOException {
+    public static String extractRssUrl(String url) throws IOException {
         org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
         return doc.select("[type='application/rss+xml ']").attr("abs:href");
     }
 
-    private static void             saveSummary(String webSummary) {
+    private static void saveSummary(String webSummary) {
         try {
             fileWriter.write(webSummary);
             fileWriter.close();
@@ -268,7 +268,7 @@ public class RSS {
         }
     }
 
-    private static String           createWebSummary(String URL) {
+    private static String createWebSummary(String URL) {
         String webSummary = "";
 
         try {
@@ -288,7 +288,7 @@ public class RSS {
         return webSummary;
     }
 
-    private static void             createFileScanner() {
+    private static void createFileScanner() {
         try {
             fileScanner = new Scanner(FILE);
         } catch (FileNotFoundException e) {
@@ -296,7 +296,7 @@ public class RSS {
         }
     }
 
-    private static  ArrayList<String>   getSavedUrls(){
+    private static  ArrayList<String> getSavedUrls(){
 
         ArrayList<String> urls = new ArrayList<>();
         createFileScanner();
@@ -308,7 +308,7 @@ public class RSS {
         return urls;
     }
 
-    private static  ArrayList<String>   getSavedTitles(){
+    private static  ArrayList<String> getSavedTitles(){
 
         ArrayList<String> titles = new ArrayList<>();
         createFileScanner();
@@ -320,7 +320,7 @@ public class RSS {
         return titles;
     }
 
-    private static  ArrayList<String>   getSavedRss(){
+    private static  ArrayList<String> getSavedRss(){
 
         ArrayList<String> Rss = new ArrayList<>();
         createFileScanner();
@@ -331,7 +331,7 @@ public class RSS {
 
         return Rss;
     }
-    private static void                 dataError() {
+    private static void dataError() {
         System.out.println("data.txt not found!");
     }
 }
